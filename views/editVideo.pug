@@ -1,0 +1,9 @@
+extends layouts/main.pug
+
+block content
+    .form-container
+    form(action=`${routes.videos}${routes.videoDetail}` type="GET")
+        input(type="text" placeholder="Title" name="title")
+        input(type="text" placeholder="Description" name="description")
+        input(type="submit" value="Submit")
+    a.form-container__link(href=router.home) Delete Video

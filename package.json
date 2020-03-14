@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node -r esm index.js --delay 2"
+    "start": "nodemon --exec babel-node -r esm init.js --delay 2"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "pug": "^2.0.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
