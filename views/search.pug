@@ -2,8 +2,11 @@ extends layouts/main.pug
 include mixins/videoBlock
 
 block content
-    .search__header
-        h3 Searching for #{searchKeyword}
-    .search_videos
-        each video in videos
-            +videoBlock(video)
+    if videos.length > 0
+        .search__header
+            h3 Searching for #{keyWord}
+        .search_videos
+            each video in videos
+                +videoBlock(video)
+    else
+        h3 No Videos for #{keyWord}

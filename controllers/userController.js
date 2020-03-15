@@ -14,8 +14,20 @@ export const postJoin = (req, res) =>
         res.redirect(routes.home);
     }
 };
-export const login = (req, res) => res.render("login", {pageTitle: "Login", userName: req.body.name});
-export const logout = (req, res) => res.render("logout", {pageTitle: "Log out"});
+
+export const getLogin = (req, res) => {
+    res.render("login", {pageTitle: "Login", userName: req.body.name});
+}
+
+export const postLogin = (req, res) => {
+    res.redirect(routes.home);
+}
+
+export const logout = (req, res) => {
+    //user.isAuthenticated = false;
+    res.redirect(routes.home);
+};
+
 export const users = (req, res) => res.render("users", {pageTitle: "Users"});
 export const userDetails = (req, res) => res.render("userDetails", {pageTitle: "User Details"});
 export const editProfile = (req, res) => res.render("editProfile", {pageTitle: "Edit Profile"});

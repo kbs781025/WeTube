@@ -2,8 +2,8 @@ extend layouts/main.pug
 
 block content
     .form-container
-        form(action=routes.home method="POST")
-            input(type="email" placeholder="Email..." name="email")
-            input(type="password" placeholder="Password..." name="password")
+        form(action=routes.login method="POST")
+            input(type="email" placeholder="Email..." name="email" required=true)
+            input(type="password" placeholder="Password..." name="password" required=true)
             input(type="submit" value="Log in")
         include partials/socialLogin

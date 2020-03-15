@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded( { extended: true} ));
 
 app.use(localMiddleWare);
 
+app.use("/uploads", express.static("uploads"));
+
 app.use(routes.home, globalRouter);
 // app.use(routes.join, globalRouter);
 // app.use(routes.login, globalRouter);

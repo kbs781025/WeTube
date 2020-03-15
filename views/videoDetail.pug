@@ -1,4 +1,20 @@
 extends layouts/main.pug
+include mixins/videoBlock
 
 block content
-    p Video Detail
+    .video__player
+        video(src=`/${video.fileUrl}`) // Why does src need '/'? It might be because this page is routed from /video already
+    .video__info
+        a(href=routes.editVideo(video.id)) Edit Video
+        h5.video__title=video.title
+        if video.views === 0 || video.views === 1
+            span.video__view #{video.views} view
+        else
+            span.video__view #{video.views} views
+        p.video__description=video.description
+    .video__comments
+        if video.comments.length === 1 || video.comments.length === 0
+            span.video__comments-number #{video.comments.length} comment
+        else
+            span.video__comments-number #{video.comments.length} comments
+    
