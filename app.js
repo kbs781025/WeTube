@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded( { extended: true} ));
 app.use(localMiddleWare);
 
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("static"));
 
 app.use(routes.home, globalRouter);
 // app.use(routes.join, globalRouter);
