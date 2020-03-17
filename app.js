@@ -8,7 +8,14 @@ import userRouter from "./routers/userRouters";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
+import session from "express-session";
+import passport from "passport";
 import { localMiddleWare } from "./middleWares";
+
+import "./passport";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -17,7 +24,18 @@ app.use(logger("dev"));
 app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded( { extended: true} ));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+    session({
+        secret: process.env.COOKIE_SECRET,
+        resave: false,
+        saveUninitialized: true
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(localMiddleWare);
 
@@ -25,20 +43,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
 
 app.use(routes.home, globalRouter);
-// app.use(routes.join, globalRouter);
-// app.use(routes.login, globalRouter);
-// app.use(routes.logout, globalRouter);
-// app.use(routes.search, globalRouter);
-
 app.use(routes.users, userRouter);
-// app.use(routes.userDetail, userRouter);
-// app.use(routes.editProfile, userRouter);
-// app.use(routes.changePassword, userRouter);
-
 app.use(routes.videos, videoRouter);
-// app.use(routes.upload, videoRouter);
-// app.use(routes.videoDetail, videoRouter);
-// app.use(routes.editVideo, videoRouter);
-//app.use(routes.deleteVideo, videoRouter);
 
 export default app;
