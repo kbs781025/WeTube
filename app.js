@@ -13,11 +13,7 @@ import passport from "passport";
 import mongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import { localMiddleWare } from "./middleWares";
-
 import "./passport";
-
-import dotenv from "dotenv";
-dotenv.config();
 
 const app = express();
 
