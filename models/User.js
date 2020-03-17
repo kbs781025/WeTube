@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
+import passportLocal from "passport-local-mongoose";
 
-const userSchema = mongoose.Schema( {
+const userSchema = new mongoose.Schema( {
     userName: String,
     email: String,
     avataUrl: String,
-    gitHubId: String,
-    googleId: String
+    gitHubId: Number,
+    googleId: Number
 });
+
+userSchema.plugin(passportLocal, {usernameFiled: "email"});
 
 const userModel = mongoose.model("User", userSchema);
 
