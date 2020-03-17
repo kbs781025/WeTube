@@ -27,6 +27,6 @@ globalRouter.get(routes.logout, onlyPrivate, logout);
 globalRouter.get(routes.search, search);
 
 globalRouter.get(routes.githubAuth, githubLogin);
-globalRouter.get(routes.githubCallBack, fromGithub);
+globalRouter.get(routes.githubCallBack, githubLogin, fromGithub);
 
 export default globalRouter;
