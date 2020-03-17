@@ -1,8 +1,9 @@
 .social__login
     button.social-login--github
-        span
-            i.fab.fa-github
-        | Continue with github
+        a(href=routes.githubAuth)
+            span
+                i.fab.fa-github
+            | Continue with github
     button.social-login--google
         span
             i.fab.fa-google

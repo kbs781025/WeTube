@@ -6,7 +6,9 @@ import {
     postJoin,
     getLogin,
     postLogin,
-    logout
+    logout,
+    githubLogin,
+    fromGithub
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middleWares";
 
@@ -23,5 +25,8 @@ globalRouter.post(routes.login, onlyPublic, postLogin);
 
 globalRouter.get(routes.logout, onlyPrivate, logout);
 globalRouter.get(routes.search, search);
+
+globalRouter.get(routes.githubAuth, githubLogin);
+globalRouter.get(routes.githubCallBack, fromGithub);
 
 export default globalRouter;
