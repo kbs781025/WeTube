@@ -10,6 +10,8 @@ import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
 import session from "express-session";
 import passport from "passport";
+import mongoStore from "connect-mongo";
+import mongoose from "mongoose";
 import { localMiddleWare } from "./middleWares";
 
 import "./passport";
@@ -26,11 +28,14 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const cookieStore = mongoStore(session);
+
 app.use(
     session({
         secret: process.env.COOKIE_SECRET,
         resave: false,
-        saveUninitialized: true
+        saveUninitialized: true,
+        store: new cookieStore({ mongooseConnection: mongoose.connection })
     })
 );
 
