@@ -4,6 +4,7 @@ const JOIN = "/join";
 const LOGINS = "/login";
 const LOGOUT = "/logout";
 const SEARCH = "/search";
+const ME = "/me";
 
 // Users
 const USERS = "/users";
@@ -21,6 +22,8 @@ const DELETE_VIDEO = "/:id/delete";
 // Social auth
 const GITHUB_AUTH = "/auth/github";
 const GITHUB_CALLBACK = "/auth/github/callback";
+const GOOGLE_AUTH = "/auth/google";
+const GOOGLE_CALLBACK = "/auth/google/callback";
 
 const routes = {
     home: HOME,
@@ -28,6 +31,7 @@ const routes = {
     login: LOGINS,
     logout: LOGOUT,
     search: SEARCH,
+    me: ME,
     users: USERS,
     userDetail: id => {
         if (id) {
@@ -62,7 +66,9 @@ const routes = {
         }
     },
     githubAuth: GITHUB_AUTH,
-    githubCallBack: GITHUB_CALLBACK
+    githubCallBack: GITHUB_CALLBACK,
+    googleAuth: GOOGLE_AUTH,
+    googleCallBack: GOOGLE_CALLBACK
 };
 
 export default routes;

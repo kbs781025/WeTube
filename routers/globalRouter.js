@@ -8,7 +8,10 @@ import {
     postLogin,
     logout,
     githubLogin,
-    fromGithub
+    fromGithub,
+    getMe,
+    googleLogin,
+    fromGoogle
 } from "../controllers/userController";
 import { onlyPublic, onlyPrivate } from "../middleWares";
 
@@ -28,5 +31,10 @@ globalRouter.get(routes.search, search);
 
 globalRouter.get(routes.githubAuth, githubLogin);
 globalRouter.get(routes.githubCallBack, githubLogin, fromGithub);
+
+globalRouter.get(routes.me, onlyPrivate, getMe);
+
+globalRouter.get(routes.googleAuth, googleLogin);
+globalRouter.get(routes.googleCallBack, fromGoogle);
 
 export default globalRouter;

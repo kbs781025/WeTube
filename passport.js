@@ -1,8 +1,9 @@
 import userModel from "./models/User";
 import passport from "passport";
 import GitHubStrategy from "passport-github";
+import GoogleStrategy from "passport-google-oauth20";
 import routes from "./routes";
-import { githubCallBack } from "./controllers/userController";
+import { githubCallBack, googleCallBack } from "./controllers/userController";
 
 passport.use(userModel.createStrategy());
 
@@ -17,5 +18,16 @@ passport.use(
             callbackURL: `http://localhost:4000${routes.githubCallBack}`
         },
         githubCallBack
+    )
+);
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_ID,
+            clientSecret: process.env.GOOGLE_SECRET,
+            callbackURL: `http://localhost:4000${routes.googleCallBack}`
+        },
+        googleCallBack
     )
 );

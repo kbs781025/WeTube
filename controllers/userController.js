@@ -45,35 +45,95 @@ export const changePassword = (req, res) =>
     res.render("changePassword", { pageTitle: "Change Password" });
 
 export const githubCallBack = async (_, __, profile, cb) => {
-    //const { _json: login, html_url, avatar_url, id } = profile;
+    const {
+        _json: { id, login: name, email, avatar_url }
+    } = profile;
 
-    const name = profile._json.login;
-    const html_url = profile._json.html_url;
-    const avatar_url = profile._json.avatar_url;
-    const id = profile._json.id;
     try {
-        const user = await User.findOne({ email: html_url });
+        let user;
+        user = await User.findOne({ userName: name });
+
         if (user) {
             user.githubId = id;
             user.save();
             return cb(null, user);
         }
 
-        const newUser = await User.create({
+        user = await User.create({
             userName: name,
-            email: "abc@gmail.com",
+            email,
             avataUrl: avatar_url,
             gitHubId: id
         });
-        return cb(null, newUser);
+        return cb(null, user);
     } catch (error) {
         console.log(error);
         return cb(error);
     }
 };
 
-export const githubLogin = passport.authenticate("github");
+export const githubLogin = passport.authenticate("github", {
+    failureRedirect: routes.home
+});
 
 export const fromGithub = (req, res) => {
     res.redirect(routes.home);
 };
+
+export const getMe = (req, res) => {
+    console.log(req.user);
+    res.render("userDetails", { pageTitle: "My Detail", user: req.user });
+};
+
+export const googleLogin = passport.authenticate("google", {
+    scope: ["profile"]
+});
+
+export const googleCallBack = async (_, __, profile, cb) => {
+    const {
+        id,
+        _json: { name, picture }
+    } = profile;
+
+    try {
+        /*const updatedUser = await User.findOneAndUpdate(
+            { userName: name },
+            { new: true },
+            function(error, user) {
+                if (error) throw error;
+
+                user.userName = name;
+                user.avataUrl = picture;
+                user.googleId = id;
+
+                console.log(user);
+
+                user.save();
+                return cb(null, user);
+            }
+        );
+        return cb(null, updatedUser);
+        */
+
+        await User.findOneAndUpdate(
+            { userName: name },
+            { avataUrl: picture, googleId: id },
+            { upsert: true, new: true },
+            function(error, user) {
+                if (error) throw error;
+
+                console.log(user);
+
+                return cb(null, user);
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        cb(error);
+    }
+};
+
+export const fromGoogle = passport.authenticate("google", {
+    failureRedirect: routes.login,
+    successRedirect: routes.home
+});
