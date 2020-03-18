@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "/.env" });
+require("dotenv").config();
 
 import app from "./app";
 import "./db";
