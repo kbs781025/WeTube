@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import passportLocal from "passport-local-mongoose";
 
-const userSchema = new mongoose.Schema( {
+const userSchema = new mongoose.Schema({
     userName: String,
     email: String,
     avataUrl: String,
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema( {
     googleId: Number
 });
 
-userSchema.plugin(passportLocal, {usernameField: "email"});
+userSchema.plugin(passportLocal, { usernameField: "userName" });
 
 const userModel = mongoose.model("User", userSchema);
 
