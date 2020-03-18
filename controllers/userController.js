@@ -72,13 +72,12 @@ export const githubCallBack = async (_, __, profile, cb) => {
     }
 };
 
-export const githubLogin = passport.authenticate("github", {
-    failureRedirect: routes.home
-});
+export const githubLogin = passport.authenticate("github");
 
-export const fromGithub = (req, res) => {
-    res.redirect(routes.home);
-};
+export const fromGithub = passport.authenticate("github", {
+    failureRedirect: routes.login,
+    successRedirect: routes.home
+});
 
 export const getMe = (req, res) => {
     console.log(req.user);
@@ -121,9 +120,6 @@ export const googleCallBack = async (_, __, profile, cb) => {
             { upsert: true, new: true },
             function(error, user) {
                 if (error) throw error;
-
-                console.log(user);
-
                 return cb(null, user);
             }
         );
