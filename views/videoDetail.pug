@@ -8,12 +8,14 @@ block content
         if(video.creator.id == loggedUser.id)
             a(href=routes.editVideo(video.id)) Edit Video
         h3.video__title=video.title
-        h4.video__creator=`Created by ${video.creator.userName}`
         if video.views === 0 || video.views === 1
             span.video__view #{video.views} view
         else
             span.video__view #{video.views} views
         p.video__description=video.description
+        .video__author
+            |Uploaded By
+            a(href=routes.userDetail(video.creator.id))=video.creator.userName
     .video__comments
         if video.comments.length === 1 || video.comments.length === 0
             span.video__comments-number #{video.comments.length} comment
