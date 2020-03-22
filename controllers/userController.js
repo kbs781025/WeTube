@@ -90,7 +90,7 @@ export const githubCallBack = async (_, __, profile, cb) => {
 
             newUser.save(function(error) {
                 if (error) throw error;
-                return cb(null, this);
+                return cb(null, newUser);
             });
         });
     } catch (error) {
@@ -139,7 +139,7 @@ export const googleCallBack = async (_, __, profile, cb) => {
 
             newUser.save(function(error) {
                 if (error) throw error;
-                return cb(null, this);
+                return cb(null, newUser);
             });
         });
     } catch (error) {
