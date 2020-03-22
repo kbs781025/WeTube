@@ -15,7 +15,6 @@ export const search = async (req, res) => {
     const keyWord = req.query.term;
     let videos = [];
     try {
-        //(await videoModel.find({title: keyWord})).forEach(function(video) {videos.push(video)} );
         videos = await videoModel.find({
             title: { $regex: keyWord, $options: "i" }
         });
@@ -37,6 +36,7 @@ export const postUpload = async (req, res) => {
             creator: req.user._id
         });
         req.user.videos.push(newVideo._id);
+        req.user.save();
         res.redirect(routes.videoDetail(newVideo._id));
     } catch (error) {
         console.log(error);
@@ -58,6 +58,9 @@ export const videoDetail = async (req, res) => {
 export const getEditVideo = async (req, res) => {
     try {
         const video = await videoModel.findById(req.params.id);
+        if (video.creator !== req.user.id) {
+            throw Error();
+        }
         res.render("editVideo", {
             pageTitle: `Edit Video Title: ${video.title}`,
             id: req.params.id,
@@ -86,6 +89,10 @@ export const postEditVideo = async (req, res) => {
 export const deleteVideo = async (req, res) => {
     const id = req.params.id;
     try {
+        const video = await videoModel.findById(req.params.id);
+        if (video.creator !== req.user.id) {
+            throw Error();
+        }
         await videoModel.findOneAndDelete(id);
     } catch (error) {
         console.log(error);
