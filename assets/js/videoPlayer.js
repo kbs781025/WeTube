@@ -89,13 +89,19 @@ function onVolumeDrag(event) {
     }
 }
 
+function onClipEnd() {
+    videoPlayer.currentTime = 0.0;
+    playButton.innerHTML = `<i class="fas fa-play"></i>`;
+}
+
 function init() {
-    videoPlayer.volume = 0.5;
-    setTotalTime();
     playButton.addEventListener("click", onPlayClick);
     volumeButton.addEventListener("click", onVolumeClick);
     fullScreenButton.addEventListener("click", onFullScreenClick);
     volumeBar.addEventListener("input", onVolumeDrag);
+    videoPlayer.addEventListener("ended", onClipEnd);
+    setTotalTime();
+    videoPlayer.volume = 0.5; // Should be called after setTotalTime. weird.
 }
 
 if (videoContainer) {
