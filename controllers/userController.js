@@ -37,10 +37,22 @@ export const logout = (req, res) => {
 };
 
 export const users = (req, res) => res.render("users", { pageTitle: "Users" });
-export const userDetails = (req, res) =>
-    res.render("userDetails", { pageTitle: "User Details" });
+export const userDetails = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.user._id);
+        res.render("userDetails", {
+            pageTitle: "User Details",
+            user
+        });
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.home);
+    }
+};
+
 export const editProfile = (req, res) =>
     res.render("editProfile", { pageTitle: "Edit Profile" });
+
 export const changePassword = (req, res) =>
     res.render("changePassword", { pageTitle: "Change Password" });
 
