@@ -1,9 +1,9 @@
 extends layouts/main.pug
 include mixins/videoBlock
+include mixins/videoPlayer
 
 block content
-    .video__player
-        video(src=`/${video.fileUrl}`) // Why does src need '/'? It might be because this page is routed from /video already
+    +videoPlayer({src : video.fileUrl})
     .video__info
         if(video.creator.id == loggedUser.id)
             a(href=routes.editVideo(video.id)) Edit Video
