@@ -6,11 +6,11 @@ const fullScreenButton = document.getElementById("jsFullScreenButton");
 
 function onPlayClick() {
     if (videoPlayer.paused) {
-        console.log("Now play");
-        playButton.innerHTML = `<i class="fas fa-play"></i>`;
+        videoPlayer.play();
+        playButton.innerHTML = `<i class="fas fa-pause"></i>`;
     } else {
         videoPlayer.pause();
-        playButton.innerHTML = `<i class="fas fa-pause"></i>`;
+        playButton.innerHTML = `<i class="fas fa-play"></i>`;
     }
 }
 
