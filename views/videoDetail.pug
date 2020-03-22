@@ -5,8 +5,10 @@ block content
     .video__player
         video(src=`/${video.fileUrl}`) // Why does src need '/'? It might be because this page is routed from /video already
     .video__info
-        a(href=routes.editVideo(video.id)) Edit Video
-        h5.video__title=video.title
+        if(video.creator.id == loggedUser.id)
+            a(href=routes.editVideo(video.id)) Edit Video
+        h3.video__title=video.title
+        h4.video__creator=`Created by ${video.creator.userName}`
         if video.views === 0 || video.views === 1
             span.video__view #{video.views} view
         else
