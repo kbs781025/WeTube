@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     googleId: Number
 });
 
-userSchema.plugin(passportLocal, { usernameField: "userName" });
+userSchema.plugin(passportLocal, { usernameField: "email" });
 
 const userModel = mongoose.model("User", userSchema);
 

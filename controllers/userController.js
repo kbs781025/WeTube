@@ -27,7 +27,7 @@ export const getLogin = (req, res) => {
 };
 
 export const postLogin = passport.authenticate("local", {
-    successRedirect: routes.home,
+    successRedirect: routes.me,
     failureRedirect: routes.login
 });
 
@@ -53,31 +53,46 @@ export const userDetails = async (req, res) => {
 export const editProfile = (req, res) =>
     res.render("editProfile", { pageTitle: "Edit Profile" });
 
-export const changePassword = (req, res) =>
+export const getChangePassword = (req, res) =>
     res.render("changePassword", { pageTitle: "Change Password" });
+
+export const postChangePassword = async (req, res) => {
+    const {
+        body: { currentPassword, newPassword, verifiedPassword }
+    } = req;
+
+    if (newPassword !== verifiedPassword) {
+        res.redirect(routes.me);
+        return;
+    }
+
+    await req.user.changePassword(currentPassword, newPassword);
+    res.redirect(routes.me);
+};
 
 export const githubCallBack = async (_, __, profile, cb) => {
     const {
-        _json: { id, login: name, email, avatar_url }
+        _json: { id: gitHubId, login: userName, avatar_url: avatarUrl },
+        emails
     } = profile;
 
     try {
-        let user;
-        user = await User.findOne({ userName: name });
+        User.findOne({ gitHubId }, function(error, user) {
+            if (error) throw error;
 
-        if (user) {
-            user.githubId = id;
-            user.save();
-            return cb(null, user);
-        }
+            if (user) return cb(null, user);
 
-        user = await User.create({
-            userName: name,
-            email,
-            avatarUrl: avatar_url,
-            gitHubId: id
+            let newUser = new User();
+            newUser.email = emails[0].value;
+            newUser.userName = userName;
+            newUser.avatarUrl = avatarUrl;
+            newUser.gitHubId = gitHubId;
+
+            newUser.save(function(error) {
+                if (error) throw error;
+                return cb(null, this);
+            });
         });
-        return cb(null, user);
     } catch (error) {
         console.log(error);
         return cb(error);
@@ -88,7 +103,7 @@ export const githubLogin = passport.authenticate("github");
 
 export const fromGithub = passport.authenticate("github", {
     failureRedirect: routes.login,
-    successRedirect: routes.home
+    successRedirect: routes.me
 });
 
 export const getMe = (req, res) => {
@@ -96,34 +111,45 @@ export const getMe = (req, res) => {
 };
 
 export const googleLogin = passport.authenticate("google", {
-    scope: ["profile"]
+    scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email"
+    ]
 });
 
 export const googleCallBack = async (_, __, profile, cb) => {
     const {
-        id,
-        _json: { name, picture }
+        id: googleId,
+        _json: { name: userName, email, picture: avatarUrl }
     } = profile;
 
     try {
-        await User.findOneAndUpdate(
-            { userName: name },
-            { avatarUrl: picture, googleId: id },
-            { upsert: true, new: true },
-            function(error, user) {
-                if (error) throw error;
+        User.findOne({ googleId }, function(error, user) {
+            if (error) throw error;
+
+            if (user) {
                 return cb(null, user);
             }
-        );
+
+            let newUser = new User();
+            newUser.email = email;
+            newUser.userName = userName;
+            newUser.avatarUrl = avatarUrl;
+            newUser.googleId = googleId;
+
+            newUser.save(function(error) {
+                if (error) throw error;
+                return cb(null, this);
+            });
+        });
     } catch (error) {
-        console.log(error);
         return cb(error);
     }
 };
 
 export const fromGoogle = passport.authenticate("google", {
     failureRedirect: routes.login,
-    successRedirect: routes.home
+    successRedirect: routes.me
 });
 
 export const postEditProfile = async (req, res) => {
