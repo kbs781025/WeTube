@@ -66,7 +66,12 @@ export const postChangePassword = async (req, res) => {
         return;
     }
 
-    await req.user.changePassword(currentPassword, newPassword);
+    await req.user.changePassword(currentPassword, newPassword, function(
+        error
+    ) {
+        console.log(error);
+        res.redirect(routes.me);
+    });
     res.redirect(routes.me);
 };
 
