@@ -62,7 +62,7 @@ export const githubCallBack = async (_, __, profile, cb) => {
         user = await User.create({
             userName: name,
             email,
-            avataUrl: avatar_url,
+            avatarUrl: avatar_url,
             gitHubId: id
         });
         return cb(null, user);
@@ -80,7 +80,6 @@ export const fromGithub = passport.authenticate("github", {
 });
 
 export const getMe = (req, res) => {
-    console.log(req.user);
     res.render("userDetails", { pageTitle: "My Detail", user: req.user });
 };
 
@@ -95,28 +94,9 @@ export const googleCallBack = async (_, __, profile, cb) => {
     } = profile;
 
     try {
-        /*const updatedUser = await User.findOneAndUpdate(
-            { userName: name },
-            { new: true },
-            function(error, user) {
-                if (error) throw error;
-
-                user.userName = name;
-                user.avataUrl = picture;
-                user.googleId = id;
-
-                console.log(user);
-
-                user.save();
-                return cb(null, user);
-            }
-        );
-        return cb(null, updatedUser);
-        */
-
         await User.findOneAndUpdate(
             { userName: name },
-            { avataUrl: picture, googleId: id },
+            { avatarUrl: picture, googleId: id },
             { upsert: true, new: true },
             function(error, user) {
                 if (error) throw error;
@@ -125,7 +105,7 @@ export const googleCallBack = async (_, __, profile, cb) => {
         );
     } catch (error) {
         console.log(error);
-        cb(error);
+        return cb(error);
     }
 };
 
@@ -133,3 +113,21 @@ export const fromGoogle = passport.authenticate("google", {
     failureRedirect: routes.login,
     successRedirect: routes.home
 });
+
+export const postEditProfile = async (req, res) => {
+    const {
+        body: { name, email },
+        file
+    } = req;
+    try {
+        await User.findByIdAndUpdate(req.user._id, {
+            userName: name,
+            email,
+            avatarUrl: file ? file.path : req.user.avatarUrl
+        });
+        res.redirect(routes.me);
+    } catch (err) {
+        console.log(err);
+        res.redirect(routes.editProfile);
+    }
+};

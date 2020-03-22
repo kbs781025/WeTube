@@ -3,5 +3,7 @@ extends layouts/main.pug
 block content
     .user-profile
         .user_profile__header
-            img.avatar(src=user.avataUrl)
+            img.avatar(src=user.avatarUrl)
             h4.profile__username=user.userName
+            h4.profile__email=user.email
+            a(href=`users${routes.editProfile}`) Edit my profile
