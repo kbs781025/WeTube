@@ -4,6 +4,6 @@ import { hitView } from "../controllers/videoController";
 
 const apiRouter = express.Router();
 
-apiRouter.get(routes.apiView, hitView);
+apiRouter.post(routes.apiView, hitView);
 
 export default apiRouter;

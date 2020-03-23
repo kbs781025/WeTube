@@ -7,6 +7,11 @@ const currentTime = document.getElementById("jsCurrentTime");
 const totalTime = document.getElementById("jsTotalTime");
 const volumeBar = document.getElementById("jsVolume");
 
+function fetchViewAPI() {
+    const videoId = window.location.href.split("videos")[1];
+    fetch(`/api${videoId}/view`, { method: "POST" });
+}
+
 function onPlayClick() {
     if (videoPlayer.paused) {
         videoPlayer.play();
@@ -94,6 +99,7 @@ function onClipEnd() {
 }
 
 function init() {
+    fetchViewAPI();
     playButton.addEventListener("click", onPlayClick);
     volumeButton.addEventListener("click", onVolumeClick);
     fullScreenButton.addEventListener("click", onFullScreenClick);
