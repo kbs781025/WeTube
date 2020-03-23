@@ -25,6 +25,10 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 const GOOGLE_AUTH = "/auth/google";
 const GOOGLE_CALLBACK = "/auth/google/callback";
 
+// API
+const API = "/api";
+const API_VIEW = "/:id/view";
+
 const routes = {
     home: HOME,
     join: JOIN,
@@ -68,7 +72,9 @@ const routes = {
     githubAuth: GITHUB_AUTH,
     githubCallBack: GITHUB_CALLBACK,
     googleAuth: GOOGLE_AUTH,
-    googleCallBack: GOOGLE_CALLBACK
+    googleCallBack: GOOGLE_CALLBACK,
+    api: API,
+    apiView: API_VIEW
 };
 
 export default routes;

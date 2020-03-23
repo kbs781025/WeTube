@@ -14,6 +14,7 @@ import mongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import { localMiddleWare } from "./middleWares";
 import "./passport";
+import apiRouter from "./routers/apiRouters";
 
 const app = express();
 
@@ -46,5 +47,6 @@ app.use("/static", express.static("static"));
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
+app.use(routes.api, apiRouter);
 
 export default app;
