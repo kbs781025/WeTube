@@ -75,7 +75,6 @@ function setTotalTime() {
 
 function onVolumeDrag(event) {
     const rangeValue = event.target.value;
-    console.log(rangeValue);
     videoPlayer.volume = rangeValue;
 
     if (rangeValue > 0.6) {
