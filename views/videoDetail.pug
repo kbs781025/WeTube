@@ -28,7 +28,12 @@ block content
                 span#jsCommentsNumber=video.comments.length
                 |     comments
         ul.video__comments-list#jsCommentsList
-            each comment in video.comments
+            each comment, index in video.comments
                 li
                     span=comment.text
+                    h1=loggedUser._id
+                    h1=comment.creator
+                    if loggedUser._id !== comment.creator
+                            form.jsDeleteComment
+                                input(type="button" value="Delete")
     
