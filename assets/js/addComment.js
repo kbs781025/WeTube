@@ -2,6 +2,19 @@ import axios from "axios";
 const commentForm = document.getElementById("jsCommentForm");
 const commentsList = document.getElementById("jsCommentsList");
 const commentsNumber = document.getElementById("jsCommentsNumber");
+const deleteCommentForms = document.getElementsByClassName("jsDeleteComment");
+
+function getVideoId() {
+    return window.location.href.split("videos")[1];
+}
+
+function incrementCommentsCount() {
+    commentsNumber.innerHTML = parseInt(commentsNumber.innerHTML) + 1;
+}
+
+function decrementCommentsCount() {
+    commentsNumber.innerHTML = parseInt(commentsNumber.innerHTML) - 1;
+}
 
 function addComment(comment) {
     const list = document.createElement("li");
@@ -9,32 +22,67 @@ function addComment(comment) {
     span.innerHTML = comment;
     list.appendChild(span);
     commentsList.appendChild(list);
-
-    commentsNumber.innerHTML = parseInt(commentsNumber.innerHTML) + 1;
+    incrementCommentsCount;
 }
 
-async function handleSubmit(event) {
+async function handleAddSubmit(event) {
     event.preventDefault();
     const commentInput = commentForm.querySelector("input");
     const comment = commentInput.value;
     commentInput.value = "";
 
-    const videoId = window.location.href.split("videos")[1];
+    const videoId = getVideoId();
     const response = await axios({
         url: `/api${videoId}/comment`,
         method: "POST",
         data: { comment }
     });
 
-    if (response.status == 200) {
+    if (response.status === 200) {
         addComment(comment);
     }
 }
 
-function init() {
-    commentForm.addEventListener("submit", handleSubmit);
+function initAddComment() {
+    commentForm.addEventListener("submit", handleAddSubmit);
+}
+
+async function sendDeleteComment(event) {
+    const videoId = getVideoId();
+    const comment = event.target.closest("li").childNodes[0].innerHTML;
+    console.log(comment);
+    const response = await axios({
+        url: `/api${videoId}/delete-comment`,
+        method: "POST",
+        data: { comment }
+    });
+
+    if (response.status === 200) {
+        deleteComment(event.target);
+    }
+}
+
+function deleteComment(deleteInput) {
+    const enclosingUl = deleteInput.closest("ul");
+    enclosingUl.removeChild(deleteInput.closest("li"));
+    decrementCommentsCount();
+}
+
+function handleDeleteSubmit(event) {
+    event.preventDefault();
+    sendDeleteComment(event);
+}
+
+function initDeleteComment() {
+    Array.from(deleteCommentForms).forEach(form => {
+        form.addEventListener("click", handleDeleteSubmit);
+    });
 }
 
 if (commentForm) {
-    init();
+    initAddComment();
+}
+
+if (deleteCommentForms) {
+    initDeleteComment();
 }
