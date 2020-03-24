@@ -28,6 +28,7 @@ const GOOGLE_CALLBACK = "/auth/google/callback";
 // API
 const API = "/api";
 const API_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
 
 const routes = {
     home: HOME,
@@ -74,7 +75,8 @@ const routes = {
     googleAuth: GOOGLE_AUTH,
     googleCallBack: GOOGLE_CALLBACK,
     api: API,
-    apiView: API_VIEW
+    apiView: API_VIEW,
+    addComment: ADD_COMMENT
 };
 
 export default routes;
