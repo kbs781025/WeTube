@@ -13,6 +13,7 @@ function fetchViewAPI() {
 }
 
 function onPlayClick() {
+    fetchViewAPI();
     if (videoPlayer.paused) {
         videoPlayer.play();
         playButton.innerHTML = `<i class="fas fa-pause"></i>`;
@@ -99,7 +100,6 @@ function onClipEnd() {
 }
 
 function init() {
-    fetchViewAPI();
     playButton.addEventListener("click", onPlayClick);
     volumeButton.addEventListener("click", onVolumeClick);
     fullScreenButton.addEventListener("click", onFullScreenClick);
