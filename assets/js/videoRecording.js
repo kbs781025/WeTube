@@ -13,7 +13,6 @@ function stopRecording() {
 }
 
 function handleData(event) {
-    console.log(event);
     const videoFile = event.data;
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(videoFile);
