@@ -16,13 +16,26 @@ function decrementCommentsCount() {
     commentsNumber.innerHTML = parseInt(commentsNumber.innerHTML) - 1;
 }
 
+function createDeleteForm() {
+    const form = document.createElement("form");
+    form.classList.add("jsDeleteComment");
+    const input = document.createElement("input");
+    input.type = "button";
+    input.value = "Delete";
+
+    form.appendChild(input);
+    form.addEventListener("click", handleDeleteSubmit);
+    return form;
+}
+
 function addComment(comment) {
     const list = document.createElement("li");
     const span = document.createElement("span");
     span.innerHTML = comment;
     list.appendChild(span);
-    commentsList.appendChild(list);
-    incrementCommentsCount;
+    list.appendChild(createDeleteForm());
+    commentsList.insertBefore(list, commentsList.childNodes[0]);
+    incrementCommentsCount();
 }
 
 async function handleAddSubmit(event) {
@@ -50,7 +63,6 @@ function initAddComment() {
 async function sendDeleteComment(event) {
     const videoId = getVideoId();
     const comment = event.target.closest("li").childNodes[0].innerHTML;
-    console.log(comment);
     const response = await axios({
         url: `/api${videoId}/delete-comment`,
         method: "POST",
