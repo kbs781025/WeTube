@@ -76,7 +76,6 @@ function setCurrentTime() {
 
 function setTotalTime() {
     totalTime.innerHTML = formatTime(videoPlayer.duration);
-    setInterval(setCurrentTime, 1000);
 }
 
 function onVolumeDrag(event) {
@@ -105,8 +104,10 @@ function init() {
     fullScreenButton.addEventListener("click", onFullScreenClick);
     volumeBar.addEventListener("input", onVolumeDrag);
     videoPlayer.addEventListener("ended", onClipEnd);
-    setTotalTime();
     videoPlayer.volume = 0.5; // Should be called after setTotalTime. weird.
+    videoPlayer.addEventListener("loadedmetadata", setTotalTime);
+    videoPlayer.addEventListener("timeupdate", setCurrentTime);
+    videoPlayer.dispatchEvent(new Event("loadedmetadata"));
 }
 
 if (videoContainer) {
